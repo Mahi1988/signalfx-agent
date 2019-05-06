@@ -93,3 +93,30 @@ func (m *Monitor) Configure(conf *Config) error {
 
 	return m.PyMonitor.Configure(conf)
 }
+
+// GetExtraMetrics returns additional metrics that should be allowed through.
+func (c *Config) GetExtraMetrics() []string {
+	var extraMetrics []string
+
+	if *c.CollectChannels {
+		extraMetrics = append(extraMetrics, groupMetricsMap[groupChannel]...)
+	}
+
+	if *c.CollectConnections {
+		extraMetrics = append(extraMetrics, groupMetricsMap[groupConnection]...)
+	}
+
+	if *c.CollectExchanges {
+		extraMetrics = append(extraMetrics, groupMetricsMap[groupExchange]...)
+	}
+
+	if *c.CollectNodes {
+		extraMetrics = append(extraMetrics, groupMetricsMap[groupNode]...)
+	}
+
+	if *c.CollectQueues {
+		extraMetrics = append(extraMetrics, groupMetricsMap[groupQueue]...)
+	}
+
+	return extraMetrics
+}
